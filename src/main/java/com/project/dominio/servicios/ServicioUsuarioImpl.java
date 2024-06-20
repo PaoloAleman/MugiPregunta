@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -84,6 +85,14 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         if (datos.getUsername()=="" || datos.getFechaNacimiento()==null ||
                 datos.getMail()=="" || datos.getNombre()=="") {
             throw new CampoVacioException("No se permiten campos vacíos!");
+        }
+    }
+
+    @Override
+    public void validarFormatoDeLaImagen(MultipartFile img) throws FormatoImagenInvalidoException {
+        String nombreImg=img.getOriginalFilename();
+        if (!nombreImg.endsWith(".jpg") && !nombreImg.endsWith(".png") && !nombreImg.endsWith(".jpeg")) {
+            throw new FormatoImagenInvalidoException("El formato de la imagen debe ser .png, .jpg o .jpeg");
         }
     }
 }

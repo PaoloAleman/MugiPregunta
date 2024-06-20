@@ -2,6 +2,7 @@ package com.project.dominio.servicios;
 
 import com.project.dominio.excepcion.*;
 import com.project.presentacion.clasesAuxiliares.DatosRegistro;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -21,4 +22,8 @@ public interface ServicioUsuario {
     void hashearPassword(String password);
 
     void validarQueNoHayCamposVacios(DatosRegistro datos) throws CampoVacioException;
+
+    void validarFormatoDeLaImagen(MultipartFile img) throws FormatoImagenInvalidoException;
+
+
 }

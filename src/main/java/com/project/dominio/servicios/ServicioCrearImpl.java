@@ -9,9 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.UUID;
 
 @Service("servicioCrear")
 @Transactional
@@ -25,15 +32,42 @@ public class ServicioCrearImpl implements ServicioCrear {
     }
 
     @Override
-    public void crearUsuario(DatosRegistro datos) {
+    public void crearUsuario(DatosRegistro datos) throws IOException {
         Ciudad ciudad=repositorioObtener.obtenerCiudadPorID(datos.getIdCiudad());
         Sexo sexo= repositorioObtener.obtenerSexoPorID(datos.getIdSexo());
         Integer edad= Period.between(LocalDate.parse(datos.getFechaNacimiento()),LocalDate.now()).getYears();
         GrupoEtario grupoEtario= definirGrupoEtario(edad);
         Rol rol=repositorioObtener.obtenerRolPorNombre("Jugador");
-        repositorioCrear.crearUsuario(new Usuario(datos.getNombre(), LocalDate.parse(datos.getFechaNacimiento()),
-                datos.getMail(), BCrypt.hashpw(datos.getPassword(),BCrypt.gensalt()),datos.getUsername(),"Hola mundo",
-                sexo,ciudad,grupoEtario,rol));
+        Usuario usuario=new Usuario(datos.getNombre(), LocalDate.parse(datos.getFechaNacimiento()),
+                datos.getMail(), BCrypt.hashpw(datos.getPassword(),BCrypt.gensalt()),datos.getUsername(),
+                sexo,ciudad,grupoEtario,rol);
+        guardarImagen(usuario,datos.getImg());
+        repositorioCrear.crearUsuario(usuario);
+    }
+
+    private void guardarImagen(Usuario usuario, MultipartFile img) throws IOException {
+        String nombreDelArchivo = UUID.randomUUID().toString();
+        byte[] bytes = img.getBytes();
+        String nombreOriginalImagen = img.getOriginalFilename();
+        usuario.setFotoPerfil(nombreOriginalImagen);
+
+        String extensionDelArchivoSubido = nombreOriginalImagen.substring(nombreOriginalImagen.lastIndexOf("."));
+        String nuevoNombreDelArchivo = nombreDelArchivo + extensionDelArchivoSubido;
+
+        File folder = new File("src/main/webapp/resources/core/fotosPerfil");
+
+        if(!folder.exists()){
+            folder.mkdirs();
+        }
+
+        Path path = Paths.get("src/main/webapp/resources/core/imagenes/imgsNoticias/" + nuevoNombreDelArchivo);
+
+        Path imagenABorrar = Paths.get("src/main/webapp/resources/core" + usuario.getFotoPerfil());
+        Files.deleteIfExists(imagenABorrar);
+
+        usuario.setFotoPerfil("/imagenes/imgsNoticias/" + nuevoNombreDelArchivo);
+
+        Files.write(path, bytes);
     }
 
     private GrupoEtario definirGrupoEtario(Integer edad) {

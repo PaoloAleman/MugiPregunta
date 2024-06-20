@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Controller
@@ -41,15 +42,18 @@ public class ControladorUsuario {
     public ModelAndView registro(@ModelAttribute("datosRegistro") DatosRegistro datosRegistro) {
         ModelMap model = new ModelMap();
         try {
+            servicioUsuario.validarQueNoHayCamposVacios(datosRegistro);
             servicioUsuario.validarQueLaCiudadExiste(datosRegistro.getIdCiudad());
             servicioUsuario.validarQueElSexoExiste(datosRegistro.getIdSexo());
             servicioUsuario.validarQueLaFechaDeNacimientoEsLogica(LocalDate.parse(datosRegistro.getFechaNacimiento()));
             servicioUsuario.validarQueNoExisteUnUsuarioConEseUsername(datosRegistro.getUsername());
             servicioUsuario.validarQueNoExisteUnUsuarioConEseMail(datosRegistro.getMail());
             servicioUsuario.validarQueLasPasswordsSonIguales(datosRegistro.getPassword(), datosRegistro.getRepetirPassword());
+            servicioUsuario.validarFormatoDeLaImagen(datosRegistro.getImg());
             servicioCrear.crearUsuario(datosRegistro);
         } catch (SexoInexistenteException | FechaNacimientoInvalidaException | CiudadInexistenteException |
-                 UsuarioExistenteException | PasswordsDiferentesException e) {
+                 UsuarioExistenteException | PasswordsDiferentesException | CampoVacioException |
+                 FormatoImagenInvalidoException | IOException e) {
             model.put("mensaje", e.getMessage());
             return new ModelAndView("registro", model);
         }

@@ -38,13 +38,12 @@ public class Usuario {
     @ManyToOne
     private Rol rol;
 
-    public Usuario(String nombre, LocalDate fechaNacimiento, String mail, String password, String username, String fotoPerfil, Sexo sexo, Ciudad ciudad, GrupoEtario grupoEtario, Rol rol) {
+    public Usuario(String nombre, LocalDate fechaNacimiento, String mail, String password, String username, Sexo sexo, Ciudad ciudad, GrupoEtario grupoEtario, Rol rol) {
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.mail = mail;
         this.password = password;
         this.username = username;
-        this.fotoPerfil=fotoPerfil;
         this.cantidadTrampitas=0;
         this.horarioInstitucion=null;
         this.sexo = sexo;
