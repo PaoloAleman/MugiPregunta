@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.time.LocalDate;
 
 @Controller
 public class ControladorUsuario {
@@ -36,25 +37,22 @@ public class ControladorUsuario {
         return new ModelAndView("registro",model);
     }
 
-    @RequestMapping(value = "/registro",method = RequestMethod.POST)
-    public ModelAndView registro(@RequestBody DatosRegistro datos){
-        ModelMap model=new ModelMap();
+    @RequestMapping(value = "/registro", method = RequestMethod.POST)
+    public ModelAndView registro(@ModelAttribute("datosRegistro") DatosRegistro datosRegistro) {
+        ModelMap model = new ModelMap();
         try {
-            servicioUsuario.validarQueNoHayCamposVacios(datos);
-            servicioUsuario.validarQueLaCiudadExiste(datos.getIdCiudad());
-            servicioUsuario.validarQueElSexoExiste(datos.getIdSexo());
-            servicioUsuario.validarQueLaFechaDeNacimientoEsLogica(datos.getFechaNacimiento());
-            servicioUsuario.validarQueNoExisteUnUsuarioConEseUsername(datos.getUsername());
-            servicioUsuario.validarQueNoExisteUnUsuarioConEseMail(datos.getMail());
-            servicioUsuario.validarQueLasPasswordsSonIguales(datos.getPassword(),datos.getRepetirPassword());
-            servicioUsuario.hashearPassword(datos.getPassword());
-            servicioCrear.crearUsuario(datos);
-            model.put("mensaje","Estamos creado su usuario, espere unos segundos!");
-            model.put("flag",1);
+            servicioUsuario.validarQueLaCiudadExiste(datosRegistro.getIdCiudad());
+            servicioUsuario.validarQueElSexoExiste(datosRegistro.getIdSexo());
+            servicioUsuario.validarQueLaFechaDeNacimientoEsLogica(LocalDate.parse(datosRegistro.getFechaNacimiento()));
+            servicioUsuario.validarQueNoExisteUnUsuarioConEseUsername(datosRegistro.getUsername());
+            servicioUsuario.validarQueNoExisteUnUsuarioConEseMail(datosRegistro.getMail());
+            servicioUsuario.validarQueLasPasswordsSonIguales(datosRegistro.getPassword(), datosRegistro.getRepetirPassword());
+            servicioCrear.crearUsuario(datosRegistro);
         } catch (SexoInexistenteException | FechaNacimientoInvalidaException | CiudadInexistenteException |
-                 UsuarioExistenteException | PasswordsDiferentesException | CampoVacioException e) {
-            model.put("mensaje",e.getMessage());
+                 UsuarioExistenteException | PasswordsDiferentesException e) {
+            model.put("mensaje", e.getMessage());
+            return new ModelAndView("registro", model);
         }
-        return new ModelAndView("popUp/mensaje",model);
+        return new ModelAndView("redirect:/home");
     }
 }

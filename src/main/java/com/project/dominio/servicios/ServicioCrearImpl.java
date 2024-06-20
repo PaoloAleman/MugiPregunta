@@ -28,10 +28,10 @@ public class ServicioCrearImpl implements ServicioCrear {
     public void crearUsuario(DatosRegistro datos) {
         Ciudad ciudad=repositorioObtener.obtenerCiudadPorID(datos.getIdCiudad());
         Sexo sexo= repositorioObtener.obtenerSexoPorID(datos.getIdSexo());
-        Integer edad= Period.between(datos.getFechaNacimiento(),LocalDate.now()).getYears();
+        Integer edad= Period.between(LocalDate.parse(datos.getFechaNacimiento()),LocalDate.now()).getYears();
         GrupoEtario grupoEtario= definirGrupoEtario(edad);
         Rol rol=repositorioObtener.obtenerRolPorNombre("Jugador");
-        repositorioCrear.crearUsuario(new Usuario(datos.getNombre(), datos.getFechaNacimiento(),
+        repositorioCrear.crearUsuario(new Usuario(datos.getNombre(), LocalDate.parse(datos.getFechaNacimiento()),
                 datos.getMail(), BCrypt.hashpw(datos.getPassword(),BCrypt.gensalt()),datos.getUsername(),"Hola mundo",
                 sexo,ciudad,grupoEtario,rol));
     }

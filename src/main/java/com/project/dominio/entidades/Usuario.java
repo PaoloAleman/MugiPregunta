@@ -53,4 +53,10 @@ public class Usuario {
         this.grupoEtario=grupoEtario;
         this.rol=rol;
     }
+
+    public Usuario(String nombre, Sexo sexo, Ciudad ciudad) {
+        this.nombre = nombre;
+        this.sexo = sexo;
+        this.ciudad = ciudad;
+    }
 }

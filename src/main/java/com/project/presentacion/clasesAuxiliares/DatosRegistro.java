@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class DatosRegistro {
 
     private String nombre;
-    private LocalDate fechaNacimiento;
+    private String fechaNacimiento;
     private Integer idSexo;
     private Integer idCiudad;
     private String username;

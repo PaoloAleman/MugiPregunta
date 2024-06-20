@@ -21,23 +21,23 @@
   <div class="relative rounded-2xl p-6 bg-[#1C1919] bg-opacity-80 lg:w-[1137px] h-auto flex justify-center items-center flex-col">
     <img class="absolute -top-8 -right-8 md:-right-20 lg:top-0 lg:-right-16 w-[90px] h-[90px] md:w-[150px] md:h-[150px]" th:src="@{iconos/kirbyRegistro.png}">
     <h2 class="mb-2 lg:mb-6 tracking-[0.12em] text-white font-semibold text-[15px] md:text-[20px] uppercase">Crear cuenta</h2>
-    <form class="text-white font-light h-full tracking-[0.06em] text-[15px]">
+    <form class="text-white font-light h-full tracking-[0.06em] text-[15px]" th:action="@{/registro}" method="POST" enctype="multipart/form-data" th:object="${datosRegistro}">
       <div class="flex flex-col md:flex-row gap-x-6 justify-center">
         <div class="flex flex-col gap-y-6">
           <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
-                 type="text" name="nombre" id="nombre" placeholder="Nombre" required>
+                 type="text" name="nombre" id="nombre" th:field="*{nombre}" placeholder="Nombre" required>
 
           <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
-                 type="date" id="fechaNacimiento" placeholder="Fecha de nacimiento" required>
+                 type="date" name="fechaNacimiento" id="fechaNacimiento" th:field="*{fechaNacimiento}" placeholder="Fecha de nacimiento" required>
 
           <select class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80 bg-"
-                  name="idSexo" id="idSexo" required>
+                  name="idSexo" id="idSexo" required th:field="*{idSexo}">
             <option value="" disabled selected hidden>Sexo</option>
             <option th:each="sexo : ${sexos}" th:value="${sexo.id}" th:text="${sexo.descripcion}"></option>
           </select>
 
           <select class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80 bg-"
-                  name="idCiudad" id="idCiudad" required>
+                  name="idCiudad" id="idCiudad" required th:field="*{idCiudad}">
             <option value="" disabled selected hidden>Ciudad</option>
             <option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombre} + ', ' + ${ciudad.pais.nombre}"></option>
           </select>
@@ -45,33 +45,29 @@
 
         <div class="flex flex-col gap-y-6">
           <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
-                 type="text" name="username" id="username" placeholder="Nombre de usuario" required>
+                 type="text" name="username" id="username" th:field="*{username}" placeholder="Nombre de usuario" required>
 
           <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
-                 type="password" name="password" id="password" placeholder="Password" required>
+                 type="password" name="password" id="password" th:field="*{password}" placeholder="Password" required>
 
           <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
-                 type="password" name="repetirPassword" id="repetir_password" placeholder="Repetir Password" required>
+                 type="password" name="repetirPassword" th:field="*{repetirPassword}" id="repetirPassword" placeholder="Repetir Password" required>
 
           <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
-                 type="email" name="mail" id="mail" placeholder="Email" required>
+                 type="email" name="mail" id="mail" th:field="*{mail}" placeholder="Email" required>
         </div>
       </div>
       <div class="mt-4 flex justify-center items-center">
         <button class="w-[159px] h-[40px] rounded-2xl bg-[#252121] bg-opacity-80 font-normal text-[12px] lg:text-[16px] uppercase"
-                type="button" name="registrarme" id="crearUsuario">Registrarse
+                type="submit" name="registrarme">Registrarse
         </button>
       </div>
     </form>
-
   </div>
 
   <div id="contenedorMensajePopUp" class="rounded-3xl bg-gradient-to-br from-zinc-700 to-zinc-900
         fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col"></div>
 
 </main>
-<script th:src="@{/js/crear/usuario.js}"></script>
-<script th:src="@{/js/funciones/redirigir.js}"></script>
-<script th:src="@{/js/funciones/cerrarPopUp.js}"></script>
 </body>
 </html>

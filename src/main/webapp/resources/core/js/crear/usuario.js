@@ -11,6 +11,7 @@ crearUsuario.addEventListener("click",()=>{
         password : document.getElementById("password").value,
         repetirPassword : document.getElementById("repetir_password").value,
         mail : document.getElementById("mail").value,
+        img : document.getElementById("img_profile").value,
     }
 
     $.ajax({
@@ -26,4 +27,5 @@ crearUsuario.addEventListener("click",()=>{
         error: function(error) {
             console.error("Error al enviar la solicitud:", error);
         }
-    });})
+    });
+})
