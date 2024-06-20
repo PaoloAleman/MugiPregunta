@@ -20,4 +20,5 @@ public interface RepositorioObtener {
     GrupoEtario obtenerGrupoEtarioPorNombre(String nombre);
 
     Rol obtenerRolPorNombre(String nombre);
+
 }

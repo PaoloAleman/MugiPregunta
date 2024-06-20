@@ -2,11 +2,14 @@ package com.project.dominio.servicios;
 
 import com.project.dominio.entidades.Ciudad;
 import com.project.dominio.entidades.Sexo;
+import com.project.dominio.entidades.Usuario;
+import com.project.dominio.excepcion.UsuarioInexistenteException;
 import com.project.infraestructura.RepositorioObtener;
 import com.project.infraestructura.RepositorioObtenerImpl;
 import com.project.dominio.excepcion.CiudadInexistenteException;
 import com.project.dominio.excepcion.SexoInexistenteException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +47,26 @@ public class ServicioObtenerImpl implements ServicioObtener {
             throw new CiudadInexistenteException("La ciudad ingresada no existe!");
         }
         return ciudad;
+    }
+
+    @Override
+    public Usuario obtenerUsuarioPorUsernamePassword(String username, String password) throws UsuarioInexistenteException {
+        Usuario usuario = repositorioObtener.obtenerUsuarioPorUsername(username);
+        validarQueHayUnUsuarioConEseUsername(usuario);
+        validarQueLaPasswordEsCorrecta(password, usuario);
+        return usuario;
+    }
+
+    private void validarQueLaPasswordEsCorrecta(String password, Usuario usuario) throws UsuarioInexistenteException {
+        if (!BCrypt.checkpw(password, usuario.getPassword())) {
+            throw new UsuarioInexistenteException("Contraseña incorrecta!");
+        }
+    }
+
+    private void validarQueHayUnUsuarioConEseUsername(Usuario usuario) throws UsuarioInexistenteException {
+        if (usuario ==null) {
+            throw new UsuarioInexistenteException("Username incorrecto!");
+        }
     }
 
     @Override

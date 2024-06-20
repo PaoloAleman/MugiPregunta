@@ -83,7 +83,7 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
     @Override
     public void validarQueNoHayCamposVacios(DatosRegistro datos) throws CampoVacioException {
         if (datos.getUsername()=="" || datos.getFechaNacimiento()==null ||
-                datos.getMail()=="" || datos.getNombre()=="") {
+                datos.getMail()=="" || datos.getNombre()=="" || datos.getImg()==null) {
             throw new CampoVacioException("No se permiten campos vacíos!");
         }
     }

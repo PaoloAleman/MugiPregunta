@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
       crossorigin=""/>
-<title>Kirby Pregunta</title>
+<title>Registro</title>
 <body class=" bg-[url('/iconos/mario.png')] bg-cover bg-no-repeat">
 <header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden'>
   <div class="flex flex-col lg:flex-row justify-between items-center h-full p-4">
@@ -32,15 +32,17 @@
 
           <select class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80 bg-"
                   name="idSexo" id="idSexo" required th:field="*{idSexo}">
-            <option value="" disabled selected>Sexo</option>
+            <option value="" selected>Sexo</option>
             <option th:each="sexo : ${sexos}" th:value="${sexo.id}" th:text="${sexo.descripcion}"></option>
           </select>
 
           <select class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80 bg-"
                   name="idCiudad" id="idCiudad" required th:field="*{idCiudad}">
-            <option value="" disabled selected>Ciudad</option>
+            <option value="" selected>Ciudad</option>
             <option th:each="ciudad : ${ciudades}" th:value="${ciudad.id}" th:text="${ciudad.nombre} + ', ' + ${ciudad.pais.nombre}"></option>
           </select>
+          <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
+                 type="file" name="img" id="img" th:field="*{img}" placeholder="Imagen">
         </div>
 
         <div class="flex flex-col gap-y-6">
@@ -56,21 +58,24 @@
           <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
                  type="email" name="mail" id="mail" th:field="*{mail}" placeholder="Email" required>
 
-          <input class="w-[280px] h-[32.88px] lg:w-[430px] lg:h-[47px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80"
-                 type="file" name="img" id="img" th:field="*{img}" placeholder="Imagen">
+          <button class="w-[159px] h-[40px] rounded-2xl bg-[#252121] bg-opacity-80 font-normal text-[12px] lg:text-[16px] uppercase mx-auto"
+                  type="submit" name="registrarme">Registrarse</button>
         </div>
-      </div>
-      <div class="mt-4 flex justify-center items-center">
-        <button class="w-[159px] h-[40px] rounded-2xl bg-[#252121] bg-opacity-80 font-normal text-[12px] lg:text-[16px] uppercase"
-                type="submit" name="registrarme">Registrarse
-        </button>
       </div>
     </form>
   </div>
 
-  <div id="contenedorMensajePopUp" class="rounded-3xl bg-gradient-to-br from-zinc-700 to-zinc-900
-        fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col"></div>
+  <div th:if="${mensaje!=null}" id="contenedorMensajePopUp" class="rounded-3xl bg-gradient-to-br from-zinc-700 to-zinc-900
+        fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col">
+    <div class="m-10 gap-6">
+      <button th:if="${flag==null}" type="button" class="w-[30.21px] absolute top-2 right-2" name="cerrarPopUp" id="cerrarPopUp">
+        <img th:src="@{/iconos/cerrarWhite.png}" class="w-[100%]">
+      </button>
+      <button th:value="${flag}" class="text-center lg:text-3xl text-xl font-bold text-white" th:text="${mensaje}" id="mensaje"></button>
+    </div>
+  </div>
 
 </main>
+<script th:src="@{/js/funciones/cerrarPopUp.js}"></script>
 </body>
 </html>

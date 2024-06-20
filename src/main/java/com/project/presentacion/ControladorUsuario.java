@@ -55,8 +55,10 @@ public class ControladorUsuario {
                  UsuarioExistenteException | PasswordsDiferentesException | CampoVacioException |
                  FormatoImagenInvalidoException | IOException e) {
             model.put("mensaje", e.getMessage());
+            model.put("ciudades",servicioObtener.obtenerCiudades());
+            model.put("sexos",servicioObtener.obtenerSexos());
             return new ModelAndView("registro", model);
         }
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/login");
     }
 }

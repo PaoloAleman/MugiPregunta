@@ -1,3 +1,4 @@
+cerrarPopUp(document.getElementById("contenedorMensajePopUp"))
 function cerrarPopUp(contenedor){
     var botonCerrarPopUp=document.getElementById("cerrarPopUp")
 
