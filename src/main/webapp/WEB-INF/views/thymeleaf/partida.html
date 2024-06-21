@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang='es'>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
+<title>Kirby Pregunta</title>
+<body class=" bg-[url('/iconos/mario.png')] bg-cover bg-no-repeat">
+<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden' th:include="./fragments/header.html">
+</header>
+<main class="h-[100vh] flex items-center justify-center">
+    <div class="relative bg-[#1C1919] bg-opacity-80 rounded-2xl md:w-[982px] w-[382px] flex justify-center items-center flex-col gap-y-14 m-4 py-12 px-4 ">
+        <div class="bg-opacity-80 rounded-2xl lg:w-[782px] p-6 w-auto flex justify-center items-center" th:classappend="'bg-['+${pregunta.categoria.color.nombre}+']'">
+            <img th:src="@{iconos/reloj.png}" class="absolute -top-0 md:top-3.5 right-8 md:right-16 w-[40px]" alt="reloj">
+            <p id="temporizador" class="text-white text-[25px] md:text-[40px] absolute top-0 right-5">10</p>
+            <p id="pregunta" class="text-white text-[20px] font-semibold text-center" th:text="${pregunta.descripcion}"></p>
+        </div>
+
+        <form th:action="@{/respuesta}" method="post">
+            <div class="relative lg:w-auto text-center flex flex-wrap justify-center font-semibold">
+                <div th:each="pyr : ${pyrs}" class="relative bg-[#1C1919] bg-opacity-80 rounded-2xl w-[350px] p-4 m-2 flex justify-center items-center">
+                    <button class="text-white text-[15px] text-center cursor-pointer" type="submit" name="idRespuesta" th:value="${pyr.respuesta.id}" th:text="${pyr.respuesta.descripcion}"></button>
+                </div>
+            </div>
+        </form>
+
+        <div class="flex justify-end w-full">
+            <form action="/partida/jugar" method="post">
+                <button id="idPregunta" value="" name="reportarPregunta" class="bg-red-400 p-2 text-white font-semibold rounded-xl">Reportar</button>
+            </form>
+        </div>
+
+    </div>
+</main>
+</body>
+</html>

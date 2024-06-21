@@ -22,4 +22,8 @@ public class PartidaPregunta {
     @ManyToOne
     private Pregunta pregunta;
 
+    public PartidaPregunta(Partida partida, Pregunta pregunta) {
+        this.partida = partida;
+        this.pregunta = pregunta;
+    }
 }

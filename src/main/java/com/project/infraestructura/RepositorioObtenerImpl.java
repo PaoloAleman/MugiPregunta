@@ -88,4 +88,38 @@ public class RepositorioObtenerImpl implements RepositorioObtener {
         return (List<Usuario>) sessionFactory.getCurrentSession().
                 createQuery("FROM Usuario ORDER BY puntaje").list();
     }
+
+    @Override
+    public Pregunta obtenerPreguntaRandom() {
+        return (Pregunta) sessionFactory.getCurrentSession().
+                createQuery("FROM Pregunta ORDER BY rand()").setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public List<PyR> obtenerRespuestasDePregunta(Integer id) {
+        return sessionFactory.getCurrentSession().
+                createQuery("FROM PyR where pregunta.id= :id").setParameter("id",id).list();
+    }
+
+    @Override
+    public Partida obtenerPartidaPorID(Integer idPartida) {
+        return (Partida) sessionFactory.getCurrentSession().
+                createQuery("FROM Partida where id= :id").
+                setParameter("id",idPartida).setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public Partida obtenerPartidaActivaDelUsuario(Integer idUsuario) {
+        return (Partida) sessionFactory.getCurrentSession().
+                createQuery("from Partida where usuario.id= :id and activa= :activa").
+                setParameter("id",idUsuario).setParameter("activa",true).
+                setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public PartidaPregunta obtenerUltimaPreguntaDeLaPartida(Integer id) {
+        return (PartidaPregunta) sessionFactory.getCurrentSession().
+                createQuery("from PartidaPregunta where partida.id= :id order by id desc").
+                setParameter("id",id).setMaxResults(1).uniqueResult();
+    }
 }

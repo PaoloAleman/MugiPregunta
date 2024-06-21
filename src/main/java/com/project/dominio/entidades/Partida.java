@@ -20,4 +20,10 @@ public class Partida {
     private Boolean activa;
     @ManyToOne
     private Usuario usuario;
+
+    public Partida(Usuario usuario) {
+        this.usuario=usuario;
+        this.puntos=0;
+        this.activa=true;
+    }
 }

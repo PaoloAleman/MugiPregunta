@@ -1,9 +1,8 @@
 package com.project.dominio.servicios;
 
-import com.project.dominio.entidades.Ciudad;
-import com.project.dominio.entidades.Sexo;
-import com.project.dominio.entidades.Usuario;
+import com.project.dominio.entidades.*;
 import com.project.dominio.excepcion.CiudadInexistenteException;
+import com.project.dominio.excepcion.PartidaInexistenteException;
 import com.project.dominio.excepcion.SexoInexistenteException;
 import com.project.dominio.excepcion.UsuarioInexistenteException;
 
@@ -22,4 +21,14 @@ public interface ServicioObtener {
     Usuario obtenerUsuarioPorID(Integer idUsuario) throws UsuarioInexistenteException;
 
     List<Usuario> obtenerUsuariosOrdenadosPorPuntaje();
+
+    Pregunta obtenerPreguntaRandom();
+
+    List<PyR> obtenerRespuestasDePregunta(Integer id);
+
+    Partida obtenerPartidaPorID(Integer idPartida) throws PartidaInexistenteException;
+
+    Partida obtenerPartidaActivaDelUsuario(Integer idUsuario) throws PartidaInexistenteException;
+
+    PartidaPregunta obtenerUltimaPreguntaDeLaPartida(Integer id);
 }

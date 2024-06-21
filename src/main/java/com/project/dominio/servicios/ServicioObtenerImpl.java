@@ -1,8 +1,7 @@
 package com.project.dominio.servicios;
 
-import com.project.dominio.entidades.Ciudad;
-import com.project.dominio.entidades.Sexo;
-import com.project.dominio.entidades.Usuario;
+import com.project.dominio.entidades.*;
+import com.project.dominio.excepcion.PartidaInexistenteException;
 import com.project.dominio.excepcion.UsuarioInexistenteException;
 import com.project.infraestructura.RepositorioObtener;
 import com.project.infraestructura.RepositorioObtenerImpl;
@@ -68,6 +67,39 @@ public class ServicioObtenerImpl implements ServicioObtener {
     @Override
     public List<Usuario> obtenerUsuariosOrdenadosPorPuntaje() {
         return repositorioObtener.obtenerUsuarioOrdenadosPorPuntaje();
+    }
+
+    @Override
+    public Pregunta obtenerPreguntaRandom() {
+        return repositorioObtener.obtenerPreguntaRandom();
+    }
+
+    @Override
+    public List<PyR> obtenerRespuestasDePregunta(Integer id) {
+        return repositorioObtener.obtenerRespuestasDePregunta(id);
+    }
+
+    @Override
+    public Partida obtenerPartidaPorID(Integer idPartida) throws PartidaInexistenteException {
+        Partida partida=repositorioObtener.obtenerPartidaPorID(idPartida);
+        if (partida==null) {
+            throw new PartidaInexistenteException("No hay ninguna partida activa ahora mismo!");
+        }
+        return partida;
+    }
+
+    @Override
+    public Partida obtenerPartidaActivaDelUsuario(Integer idUsuario) throws PartidaInexistenteException {
+        Partida partida=repositorioObtener.obtenerPartidaActivaDelUsuario(idUsuario);
+        if (partida==null) {
+            throw new PartidaInexistenteException("El usuario no tiene una partida activa");
+        }
+        return partida;
+    }
+
+    @Override
+    public PartidaPregunta obtenerUltimaPreguntaDeLaPartida(Integer id) {
+        return repositorioObtener.obtenerUltimaPreguntaDeLaPartida(id);
     }
 
     @Override

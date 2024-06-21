@@ -49,6 +49,16 @@ public class ServicioCrearImpl implements ServicioCrear {
         repositorioCrear.crearUsuario(usuario);
     }
 
+    @Override
+    public void crearPartida(Partida partida) {
+        repositorioCrear.crearPartida(partida);
+    }
+
+    @Override
+    public void crearPartidaPregunta(PartidaPregunta partidaPregunta) {
+        repositorioCrear.crearPartidaPregunta(partidaPregunta);
+    }
+
     private void guardarImagen(Usuario usuario, MultipartFile img) throws IOException {
         String nombreDelArchivo = UUID.randomUUID().toString();
         byte[] bytes = img.getBytes();

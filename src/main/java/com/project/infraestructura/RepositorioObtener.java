@@ -26,4 +26,14 @@ public interface RepositorioObtener {
     Usuario obtenerUsuarioPorID(Integer idUsuario);
 
     List<Usuario> obtenerUsuarioOrdenadosPorPuntaje();
+
+    Pregunta obtenerPreguntaRandom();
+
+    List<PyR> obtenerRespuestasDePregunta(Integer id);
+
+    Partida obtenerPartidaPorID(Integer idPartida);
+
+    Partida obtenerPartidaActivaDelUsuario(Integer idUsuario);
+
+    PartidaPregunta obtenerUltimaPreguntaDeLaPartida(Integer id);
 }
