@@ -1,11 +1,11 @@
 package com.project.dominio.servicios;
 
+import com.project.dominio.entidades.Partida;
 import com.project.dominio.entidades.Pregunta;
 import com.project.dominio.entidades.PyR;
-import com.project.dominio.entidades.Respuesta;
+import com.project.infraestructura.RepositorioActualizar;
 import com.project.infraestructura.RepositorioObtener;
 import com.project.infraestructura.RepositorioPartida;
-import com.project.infraestructura.RepositorioUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,10 +18,12 @@ import java.util.stream.Collectors;
 public class ServicioPartidaImpl implements ServicioPartida {
     private RepositorioPartida repositorioPartida;
     private RepositorioObtener repositorioObtener;
+    private RepositorioActualizar repositorioActualizar;
     @Autowired
-    public ServicioPartidaImpl(RepositorioPartida repositorioPartida,RepositorioObtener repositorioObtener) {
+    public ServicioPartidaImpl(RepositorioPartida repositorioPartida, RepositorioObtener repositorioObtener, RepositorioActualizar repositorioActualizar) {
         this.repositorioPartida = repositorioPartida;
         this.repositorioObtener = repositorioObtener;
+        this.repositorioActualizar = repositorioActualizar;
     }
 
     @Override
@@ -34,5 +36,17 @@ public class ServicioPartidaImpl implements ServicioPartida {
             vista="redirect:/respuestaIncorrecta";
         }
         return vista;
+    }
+
+    @Override
+    public void actualizarPuntajePartida(Partida partida) {
+        partida.setPuntos(partida.getPuntos()+1);
+        repositorioActualizar.actualizarPartida(partida);
+    }
+
+    @Override
+    public void finalizarPartida(Partida partida) {
+        partida.setActiva(false);
+        repositorioActualizar.actualizarPartida(partida);
     }
 }

@@ -66,4 +66,33 @@ public class ControladorPartida {
         }
         return new ModelAndView(vista,model);
     }
+    @RequestMapping("/respuestaCorrecta")
+    public ModelAndView respuestaCorrecta(HttpSession session){
+        ModelMap model=new ModelMap();
+        try {
+            Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario((Integer) session.getAttribute("idUsuario"));
+            servicioPartida.actualizarPuntajePartida(partida);
+            PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
+            model.put("partida",partida);
+            model.put("pregunta",partidaPregunta.getPregunta());
+        } catch (PartidaInexistenteException e) {
+            return new ModelAndView("redirect:/home");
+        }
+        return new ModelAndView("respuestaCorrecta",model);
+    }
+    @RequestMapping("/respuestaIncorrecta")
+    public ModelAndView respuestaIncorrecta(HttpSession session){
+        ModelMap model=new ModelMap();
+        try {
+            Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario((Integer) session.getAttribute("idUsuario"));
+            servicioPartida.finalizarPartida(partida);
+            PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
+            model.put("partida",partida);
+            model.put("pregunta",partidaPregunta.getPregunta());
+            model.put("respuestaCorrecta",servicioObtener.obtenerRespuestaCorrectaDePregunta(partidaPregunta.getPregunta()));
+        } catch (PartidaInexistenteException e) {
+            return new ModelAndView("redirect:/home");
+        }
+        return new ModelAndView("respuestaIncorrecta",model);
+    }
 }

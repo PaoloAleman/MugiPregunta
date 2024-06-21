@@ -103,6 +103,11 @@ public class ServicioObtenerImpl implements ServicioObtener {
     }
 
     @Override
+    public PyR obtenerRespuestaCorrectaDePregunta(Pregunta pregunta) {
+        return repositorioObtener.obtenerRespuestaCorrectaDePregunta(pregunta);
+    }
+
+    @Override
     public List<Sexo> obtenerSexos() {
         return repositorioObtener.obtenerSexos();
     }

@@ -122,4 +122,12 @@ public class RepositorioObtenerImpl implements RepositorioObtener {
                 createQuery("from PartidaPregunta where partida.id= :id order by id desc").
                 setParameter("id",id).setMaxResults(1).uniqueResult();
     }
+
+    @Override
+    public PyR obtenerRespuestaCorrectaDePregunta(Pregunta pregunta) {
+        return (PyR) sessionFactory.getCurrentSession().
+                createQuery("FROM PyR where pregunta.id= :id and esCorrecta= :esCorrecta").
+                setParameter("id",pregunta.getId()).setParameter("esCorrecta",true).
+                setMaxResults(1).uniqueResult();
+    }
 }
