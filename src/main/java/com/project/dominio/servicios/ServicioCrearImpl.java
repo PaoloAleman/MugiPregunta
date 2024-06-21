@@ -10,6 +10,8 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.ITemplateEngine;
+import org.thymeleaf.context.Context;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +31,7 @@ public class ServicioCrearImpl implements ServicioCrear {
     public ServicioCrearImpl(RepositorioCrearImpl repositorioCrear, RepositorioObtener repositorioObtener){
         this.repositorioCrear=repositorioCrear;
         this.repositorioObtener = repositorioObtener;
+
     }
 
     @Override
@@ -38,9 +41,10 @@ public class ServicioCrearImpl implements ServicioCrear {
         Integer edad= Period.between(LocalDate.parse(datos.getFechaNacimiento()),LocalDate.now()).getYears();
         GrupoEtario grupoEtario= definirGrupoEtario(edad);
         Rol rol=repositorioObtener.obtenerRolPorNombre("Jugador");
+        Nivel nivel=repositorioObtener.obtenerNivelPorNombre("Bajo");
         Usuario usuario=new Usuario(datos.getNombre(), LocalDate.parse(datos.getFechaNacimiento()),
                 datos.getMail(), BCrypt.hashpw(datos.getPassword(),BCrypt.gensalt()),datos.getUsername(),
-                sexo,ciudad,grupoEtario,rol);
+                sexo,ciudad,grupoEtario,rol,nivel);
         guardarImagen(usuario,datos.getImg());
         repositorioCrear.crearUsuario(usuario);
     }
@@ -60,12 +64,12 @@ public class ServicioCrearImpl implements ServicioCrear {
             folder.mkdirs();
         }
 
-        Path path = Paths.get("src/main/webapp/resources/core/imagenes/imgsNoticias/" + nuevoNombreDelArchivo);
+        Path path = Paths.get("src/main/webapp/resources/core/fotosPerfil/" + nuevoNombreDelArchivo);
 
-        Path imagenABorrar = Paths.get("src/main/webapp/resources/core" + usuario.getFotoPerfil());
+        Path imagenABorrar = Paths.get("src/main/webapp/resources/core/fotosPerfil/" + usuario.getFotoPerfil());
         Files.deleteIfExists(imagenABorrar);
 
-        usuario.setFotoPerfil("/imagenes/imgsNoticias/" + nuevoNombreDelArchivo);
+        usuario.setFotoPerfil("fotosPerfil/" + nuevoNombreDelArchivo);
 
         Files.write(path, bytes);
     }

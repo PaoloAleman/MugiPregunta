@@ -10,12 +10,8 @@
       crossorigin=""/>
 <title>Registro</title>
 <body class=" bg-[url('/iconos/mario.png')] bg-cover bg-no-repeat">
-<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden'>
-  <div class="flex flex-col lg:flex-row justify-between items-center h-full p-4">
-    <h1 class="font-[primary] not-italic text-[20px] lg:text-[35px] font-extrabold">
-      <span class="text-[#E169E3]">KIRBY </span><span class="text-[#5990D2]">PREGUNTA</span>
-    </h1>
-  </div>
+<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden' th:include="./fragments/header.html">
+
 </header>
 <main class="container mx-auto my-4 flex justify-center">
   <div class="relative rounded-2xl p-6 bg-[#1C1919] bg-opacity-80 lg:w-[1137px] h-auto flex justify-center items-center flex-col">
@@ -66,13 +62,8 @@
   </div>
 
   <div th:if="${mensaje!=null}" id="contenedorMensajePopUp" class="rounded-3xl bg-gradient-to-br from-zinc-700 to-zinc-900
-        fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col">
-    <div class="m-10 gap-6">
-      <button th:if="${flag==null}" type="button" class="w-[30.21px] absolute top-2 right-2" name="cerrarPopUp" id="cerrarPopUp">
-        <img th:src="@{/iconos/cerrarWhite.png}" class="w-[100%]">
-      </button>
-      <button th:value="${flag}" class="text-center lg:text-3xl text-xl font-bold text-white" th:text="${mensaje}" id="mensaje"></button>
-    </div>
+        fixed left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col" th:include="./popUp/mensaje.html">
+
   </div>
 
 </main>

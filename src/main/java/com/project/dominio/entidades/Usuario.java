@@ -25,6 +25,7 @@ public class Usuario {
     private String fotoPerfil;
     private Integer cantidadTrampitas;
     private Time horarioInstitucion;
+    private Integer puntaje;
     @ManyToOne
     private Sexo sexo;
     @ManyToOne
@@ -38,7 +39,7 @@ public class Usuario {
     @ManyToOne
     private Rol rol;
 
-    public Usuario(String nombre, LocalDate fechaNacimiento, String mail, String password, String username, Sexo sexo, Ciudad ciudad, GrupoEtario grupoEtario, Rol rol) {
+    public Usuario(String nombre, LocalDate fechaNacimiento, String mail, String password, String username, Sexo sexo, Ciudad ciudad, GrupoEtario grupoEtario, Rol rol, Nivel nivel) {
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.mail = mail;
@@ -51,6 +52,8 @@ public class Usuario {
         this.institucion=null;
         this.grupoEtario=grupoEtario;
         this.rol=rol;
+        this.nivel=nivel;
+        this.puntaje=0;
     }
 
     public Usuario(String nombre, Sexo sexo, Ciudad ciudad) {

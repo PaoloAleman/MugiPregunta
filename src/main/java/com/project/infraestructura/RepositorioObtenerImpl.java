@@ -68,4 +68,24 @@ public class RepositorioObtenerImpl implements RepositorioObtener {
                 createQuery("from Rol where nombre= :nombre").
                 setParameter("nombre",nombre).setMaxResults(1).uniqueResult();
     }
+
+    @Override
+    public Nivel obtenerNivelPorNombre(String nombre) {
+        return (Nivel) sessionFactory.getCurrentSession().
+                createQuery("FROM Nivel where nombre= :nombre").
+                setParameter("nombre",nombre).setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public Usuario obtenerUsuarioPorID(Integer idUsuario) {
+        return (Usuario) sessionFactory.getCurrentSession().
+                createQuery("FROM Usuario where id= :id").
+                setParameter("id",idUsuario).setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public List<Usuario> obtenerUsuarioOrdenadosPorPuntaje() {
+        return (List<Usuario>) sessionFactory.getCurrentSession().
+                createQuery("FROM Usuario ORDER BY puntaje").list();
+    }
 }

@@ -21,4 +21,9 @@ public interface RepositorioObtener {
 
     Rol obtenerRolPorNombre(String nombre);
 
+    Nivel obtenerNivelPorNombre(String nombre);
+
+    Usuario obtenerUsuarioPorID(Integer idUsuario);
+
+    List<Usuario> obtenerUsuarioOrdenadosPorPuntaje();
 }

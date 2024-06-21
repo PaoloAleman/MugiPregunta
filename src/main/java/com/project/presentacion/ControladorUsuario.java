@@ -1,5 +1,6 @@
 package com.project.presentacion;
 
+import com.project.dominio.entidades.Usuario;
 import com.project.dominio.excepcion.*;
 import com.project.dominio.servicios.ServicioCrear;
 import com.project.dominio.servicios.ServicioEliminar;
@@ -12,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -60,5 +62,10 @@ public class ControladorUsuario {
             return new ModelAndView("registro", model);
         }
         return new ModelAndView("redirect:/login");
+    }
+
+    @RequestMapping("/validarMail")
+    public ModelAndView validarMail(HttpSession session){
+        return new ModelAndView("validarMail");
     }
 }

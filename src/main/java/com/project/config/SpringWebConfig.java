@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -30,6 +31,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/css/**").addResourceLocations("/resources/core/css/");
         registry.addResourceHandler("/js/**").addResourceLocations("/resources/core/js/");
         registry.addResourceHandler("/iconos/**").addResourceLocations("/resources/core/iconos/");
+        registry.addResourceHandler("/fotosPerfil/**").addResourceLocations("/resources/core/fotosPerfil/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
     }
 
@@ -77,8 +79,7 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Bean(name = "multipartResolver")
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
-        resolver.setMaxUploadSize(10000000);
+        resolver.setMaxUploadSize(2000 * 2000);
         return resolver;
     }
-
 }

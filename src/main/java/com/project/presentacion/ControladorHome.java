@@ -28,8 +28,14 @@ public class ControladorHome {
     }
 
     @RequestMapping(value ="/home")
-    public ModelAndView home(){
+    public ModelAndView home(HttpSession session){
         ModelMap model=new ModelMap();
+        try {
+            model.put("usuarios",servicioObtener.obtenerUsuariosOrdenadosPorPuntaje());
+            model.put("usuario",servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario")));
+        } catch (UsuarioInexistenteException e) {
+            return new ModelAndView("redirect:/login",model);
+        }
         return new ModelAndView("home",model);
     }
     @RequestMapping("/login")

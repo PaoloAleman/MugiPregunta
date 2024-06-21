@@ -10,12 +10,7 @@
       crossorigin=""/>
 <title>Kirby Pregunta</title>
 <body class=" bg-[url('/iconos/mario.png')] bg-cover bg-no-repeat">
-<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden'>
-    <div class="flex flex-col lg:flex-row justify-between items-center h-full p-4">
-        <h1 class="font-[primary] not-italic text-[20px] lg:text-[35px] font-extrabold">
-            <span class="text-[#E169E3]">KIRBY </span><span class="text-[#5990D2]">PREGUNTA</span>
-        </h1>
-    </div>
+<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden' th:include="./fragments/header.html">
 </header>
 
 <main class="flex items-center justify-center pt-12">
@@ -36,6 +31,7 @@
                 <input class="bg-[#252121] rounded-[10px] w-[280px] h-[60px] text-left px-2 outline-0 text-white" placeholder="Usuario" id="username" name="login_username">
                 <input class="bg-[#252121] rounded-[10px] w-[280px] h-[60px] text-left px-2 outline-0 text-white" type="password" placeholder="Password"  id="password" name="login_password">
                 <button class="bg-[#252121] rounded-[10px] w-[280px] h-[60px] text-left px-2 outline-0 text-white text-center uppercase tracking-[2px] resaltar" name='login'>Ingresar</button>
+                <p class="text-[16px] font-bold text-white text-center" th:text="${mensaje}"></p>
             </form>
             <p class="text-[12px] font-bold text-white">¿No tiene una cuenta? <a class="text-[#92D7F4]" th:href="@{/registro}">Registrate aca</a></p>
             <img class="absolute w-[100px] h-[100px]  lg:w-[160px] lg:h-[184px] bottom-0 -right-8 lg:-right-16" th:src="@{iconos/pngwingLogin.png}">

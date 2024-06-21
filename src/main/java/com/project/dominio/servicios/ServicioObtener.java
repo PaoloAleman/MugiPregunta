@@ -18,4 +18,8 @@ public interface ServicioObtener {
     Ciudad obtenerCiudadPorID(Integer idCiudad) throws CiudadInexistenteException;
 
     Usuario obtenerUsuarioPorUsernamePassword(String username, String password) throws UsuarioInexistenteException;
+
+    Usuario obtenerUsuarioPorID(Integer idUsuario) throws UsuarioInexistenteException;
+
+    List<Usuario> obtenerUsuariosOrdenadosPorPuntaje();
 }
