@@ -10,7 +10,7 @@
       crossorigin=""/>
 <title>Ranking</title>
 <body class=" bg-[url('/iconos/mario.png')] bg-cover bg-no-repeat">
-<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden' th:include="./fragments/header.html">
+<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden' th:include="./fragments/headerLogueado.html">
 </header>
 
 <main class="h-[80vh] flex items-center justify-center m-6">
@@ -32,8 +32,9 @@
         <div class="w-full h-[35px] lg:w-[810px] lg:h-[70px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80 flex items-center">
           <p class="text-white text-[15px] lg:text-2xl m-6" name="posicion"></p>
           <img th:src="@{${usuario.fotoPerfil}}" class="max-w-[100%] w-[30px] h-full lg:w-[50px] lg:h-[50px]  rounded-xl">
-          <form action="/user/perfil" method="get">
-            <input type="submit" class="cursor-pointer text-white text-[15px] lg:text-xl m-4" th:value="${usuario.username}" name="username">
+          <form th:action="@{/perfil}" method="get">
+            <button type="submit" class="cursor-pointer text-white text-[15px] lg:text-xl m-4"
+                    th:value="${usuario.id}" th:text="${usuario.username}" name="idUsuario"></button>
           </form>
           <p th:text="${usuario.puntaje}" class="text-white text-[15px] lg:text-2xl ml-auto mr-10 "></p>
         </div>

@@ -85,7 +85,25 @@ public class ControladorUsuario {
     @RequestMapping("/ranking")
     public ModelAndView ranking(HttpSession session){
         ModelMap model=new ModelMap();
-        model.put("usuarios",servicioObtener.obtenerUsuariosOrdenadosPorPuntaje());
+        try {
+            model.put("usuario",servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario")));
+            model.put("usuarios",servicioObtener.obtenerUsuariosOrdenadosPorPuntaje());
+        } catch (UsuarioInexistenteException e) {
+            return new ModelAndView("redirect:/login");
+        }
         return new ModelAndView("ranking",model);
+    }
+
+    @RequestMapping("/perfil")
+    public ModelAndView perfil(@RequestParam("idUsuario")Integer idUsuario, HttpSession session){
+        ModelMap model=new ModelMap();
+        try {
+            model.put("usuarioBuscado",servicioObtener.obtenerUsuarioPorID(idUsuario));
+            model.put("usuario",servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario")));
+            model.put("cantidadPartidasJugadas",servicioObtener.obtenerPartidasPorUsuario(idUsuario).size());
+        } catch (UsuarioInexistenteException e) {
+            return new ModelAndView("redirect:/home");
+        }
+        return new ModelAndView("perfil",model);
     }
 }

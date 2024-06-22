@@ -1,0 +1,84 @@
+
+<div class="flex flex-col lg:flex-row justify-between items-center h-full p-4">
+  <div class="lg:flex gap-x-2 hidden">
+    <a th:href="@{/home}"><img th:src="@{iconos/home.png}" alt="home"></a>
+  </div>
+  <div>
+    <h1 class="font-[primary] not-italic text-[20px] lg:text-[35px] font-extrabold"><span
+            class="text-[#E169E3]">KIRBY </span><span class="text-[#5990D2]">PREGUNTA</span></h1>
+  </div>
+
+  <div class="flex justify-center items-center gap-x-2">
+
+    <div class=" border-2 border-[#252121] rounded-2xl bg-[#252121] bg-opacity-80">
+      <img class="w-[100%] max-w-[50px] h-[50px]  rounded-2xl" th:src="@{${usuario.fotoPerfil}}" style="width: 400px">
+    </div>
+    <div>
+      <button id="foto-perfil" type="button" data-dropdown-toggle="userDropdown"
+              data-dropdown-placement="bottom-start"
+              class="text-[#9D9D9D] text-[15px] font-semibold tracking-[0.10em]" th:text="${usuario.username}"></button>
+
+      <div id="userDropdown"
+           class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+        <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
+          <li>
+            <form th:action="@{/perfil}" method="get">
+              <button type="submit" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                      th:value="${usuario.id}" name="idUsuario">Perfil</button>
+            </form>
+          </li>
+          <li>
+            <a th:href="@{/editarPerfil}"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Modificar Perfil</a>
+          </li>
+
+          <li th:if="${usuario.rol.id==2}">
+            <a href="/admin/jugadores"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ver
+              Jugadores</a>
+          </li>
+          <li th:if="${usuario.rol.id==2}">
+            <a href="/admin/partidas"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ver
+              Partidas</a>
+          </li>
+          <li th:if="${usuario.rol.id==2}">
+            <a href="/admin/preguntas"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ver
+              Preguntas</a>
+          </li>
+
+          <li th:if="${usuario.rol.id==3}">
+            <a href="/pregunta/preguntasSugeridas"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ver preguntas sugeridas </a>
+          </li>
+          <li th:if="${usuario.rol.id==3}">
+            <a href="/pregunta/preguntasReportadas"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Ver preguntas reportadas</a>
+          </li>
+          <li th:if="${usuario.rol.id==3}">
+            <a href="/editor/crearPregunta"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Crear
+              Preguntas</a>
+          </li>
+          <li th:if="${usuario.rol.id==3}">
+            <a href="/editor/modificarPregunta"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Modificar pregunta</a>
+          </li>
+          <li th:if="${usuario.rol.id==3}">
+            <a href="/editor/crearCategoria"
+               class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600
+                                           dark:hover:text-white">Alta categoría</a>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <p class="text-[12px] text-white font-semibold" th:text="${usuario.puntaje}"></p>
+
+    <form th:action="@{/logout}" method="post">
+      <input class="bg-[#252121] text-[12px] text-white p-2 rounded-3xl cursor-pointer hover:bg-white hover:text-black" type="submit" name="logout" value="Cerrar sesión">
+    </form>
+  </div>
+</div>
