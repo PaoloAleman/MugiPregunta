@@ -108,6 +108,25 @@ public class ServicioObtenerImpl implements ServicioObtener {
     }
 
     @Override
+    public Partida obtenerUltimaPartidaDelUsuario(Integer id) throws PartidaInexistenteException {
+        Partida partida=repositorioObtener.obtenerUltimaPartidaDelUsuario(id);
+        if (partida==null) {
+            throw new PartidaInexistenteException("Aún no has jugado partidas!");
+        }
+        return partida;
+    }
+
+    @Override
+    public List<Partida> obtenerPartidasPorUsuario(Integer idUsuario) {
+        return repositorioObtener.obtenerPartidasPorUsuario(idUsuario);
+    }
+
+    @Override
+    public List<Usuario> obtenerUsuarios() {
+        return repositorioObtener.obtenerUsuarios();
+    }
+
+    @Override
     public List<Sexo> obtenerSexos() {
         return repositorioObtener.obtenerSexos();
     }

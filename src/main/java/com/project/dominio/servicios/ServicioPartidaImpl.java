@@ -3,6 +3,7 @@ package com.project.dominio.servicios;
 import com.project.dominio.entidades.Partida;
 import com.project.dominio.entidades.Pregunta;
 import com.project.dominio.entidades.PyR;
+import com.project.dominio.entidades.Usuario;
 import com.project.infraestructura.RepositorioActualizar;
 import com.project.infraestructura.RepositorioObtener;
 import com.project.infraestructura.RepositorioPartida;
@@ -48,5 +49,11 @@ public class ServicioPartidaImpl implements ServicioPartida {
     public void finalizarPartida(Partida partida) {
         partida.setActiva(false);
         repositorioActualizar.actualizarPartida(partida);
+    }
+
+    @Override
+    public void actualizarPuntajeUsuario(Usuario usuario) {
+        usuario.setPuntaje(usuario.getPuntaje()+1);
+        repositorioActualizar.actualizarUsuario(usuario);
     }
 }

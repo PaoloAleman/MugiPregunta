@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang='es'>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
+<title>Historial de partidas</title>
+<body class=" bg-[url('/iconos/mario.png')] bg-cover bg-no-repeat">
+<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden' th:include="./fragments/header.html">
+</header>
+<main class="h-[100vh] flex items-center justify-center my-6">
+    <div class="relative bg-[#1C1919] bg-opacity-80 mx-auto rounded-2xl md:w-[682px] h-full  w-[333px] flex flex-col ">
+        <div class="flex justify-center items-start">
+            <p th:text="${usuario.username}+', jugaste '+${partidas.size()}+' partidas'" class="mt-9 text-white text-[15px] lg:text-[20px] tracking-[0.12em] text-bold uppercase"></p>
+        </div>
+        <div class="overflow-y-scroll scrollbar">
+            <table class=" bg-[#252121] bg-opacity-80 rounded-l-2xl w-[80%] mx-auto text-center  rounded-3xl border-collapse border-separate mt-12 p-5 mb-6 "  >
+                <tr class="">
+                    <th class="text-white text-[12px] font-semibold md:text-[15px] p-2">#</th>
+                    <th class="text-white text-[12px] font-semibold md:text-[15px] p-2">Puntaje</th>
+                </tr>
+                <tr class="" th:each="partida : ${partidas}">
+                    <td class="text-white text-[12px] md:text-[15px] p-2" name="orden" th:text="${partida.id}"></td>
+                    <td class="text-white text-[12px] md:text-[15px] p-2" th:text="${partida.puntos}"></td>
+                </tr>
+            </table>
+        </div>
+        <script>
+            var array = document.querySelectorAll('[name="orden"]');
+            var cantidad = array.length;
+
+            for (var i = 1; i <= cantidad; i++) {
+                array[i-1].textContent = i;
+            }
+        </script>
+        <img th:src="@{iconos/historial.png}" alt="historial" class="absolute w-[70px] h-[66px] lg:w-[90px] lg:h-[80px] bottom-0 -right-4">
+    </div>
+
+</main>
+</body>
+</html>

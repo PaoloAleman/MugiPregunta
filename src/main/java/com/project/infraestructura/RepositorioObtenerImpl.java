@@ -98,7 +98,7 @@ public class RepositorioObtenerImpl implements RepositorioObtener {
     @Override
     public List<PyR> obtenerRespuestasDePregunta(Integer id) {
         return sessionFactory.getCurrentSession().
-                createQuery("FROM PyR where pregunta.id= :id").setParameter("id",id).list();
+                createQuery("FROM PyR where pregunta.id= :id order by rand()").setParameter("id",id).list();
     }
 
     @Override
@@ -129,5 +129,24 @@ public class RepositorioObtenerImpl implements RepositorioObtener {
                 createQuery("FROM PyR where pregunta.id= :id and esCorrecta= :esCorrecta").
                 setParameter("id",pregunta.getId()).setParameter("esCorrecta",true).
                 setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public Partida obtenerUltimaPartidaDelUsuario(Integer id) {
+        return (Partida) sessionFactory.getCurrentSession().
+                createQuery("FROM Partida where usuario.id= :id order by id desc").
+                setParameter("id",id).setMaxResults(1).uniqueResult();
+    }
+
+    @Override
+    public List<Partida> obtenerPartidasPorUsuario(Integer idUsuario) {
+        return sessionFactory.getCurrentSession().
+                createQuery("from Partida where usuario.id= :id").
+                setParameter("id",idUsuario).list();
+    }
+
+    @Override
+    public List<Usuario> obtenerUsuarios() {
+        return sessionFactory.getCurrentSession().createQuery("from Usuario").list();
     }
 }

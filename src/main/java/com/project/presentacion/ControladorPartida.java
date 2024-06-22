@@ -70,11 +70,15 @@ public class ControladorPartida {
     public ModelAndView respuestaCorrecta(HttpSession session){
         ModelMap model=new ModelMap();
         try {
-            Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario((Integer) session.getAttribute("idUsuario"));
+            Usuario usuario= servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario"));
+            Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario(usuario.getId());
             servicioPartida.actualizarPuntajePartida(partida);
+            servicioPartida.actualizarPuntajeUsuario(usuario);
             PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
             model.put("partida",partida);
             model.put("pregunta",partidaPregunta.getPregunta());
+        } catch (UsuarioInexistenteException e) {
+            return new ModelAndView("redirect:/login");
         } catch (PartidaInexistenteException e) {
             return new ModelAndView("redirect:/home");
         }

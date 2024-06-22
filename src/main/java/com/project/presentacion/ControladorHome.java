@@ -2,6 +2,7 @@ package com.project.presentacion;
 
 import com.project.dominio.entidades.Usuario;
 import com.project.dominio.excepcion.CampoVacioException;
+import com.project.dominio.excepcion.PartidaInexistenteException;
 import com.project.dominio.excepcion.UsuarioInexistenteException;
 import com.project.dominio.servicios.ServicioCrear;
 import com.project.dominio.servicios.ServicioObtener;
@@ -31,10 +32,15 @@ public class ControladorHome {
     public ModelAndView home(HttpSession session){
         ModelMap model=new ModelMap();
         try {
+            Usuario usuario=servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario"));
             model.put("usuarios",servicioObtener.obtenerUsuariosOrdenadosPorPuntaje());
-            model.put("usuario",servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario")));
+            model.put("usuario",usuario);
+            model.put("ultimaPartida",servicioObtener.obtenerUltimaPartidaDelUsuario(usuario.getId()));
+            model.put("partidaActiva",servicioObtener.obtenerPartidaActivaDelUsuario(usuario.getId()));
         } catch (UsuarioInexistenteException e) {
             return new ModelAndView("redirect:/login",model);
+        } catch (PartidaInexistenteException e) {
+            model.put("mensaje",e.getMessage());
         }
         return new ModelAndView("home",model);
     }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang='es'>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
+<title>Ranking</title>
+<body class=" bg-[url('/iconos/mario.png')] bg-cover bg-no-repeat">
+<header class='bg-[#1C1919CC] bg-opacity-80  w-full px-6 overflow-hidden' th:include="./fragments/header.html">
+</header>
+
+<main class="h-[80vh] flex items-center justify-center m-6">
+
+  <div class="h-auto p-6 rounded-2xl bg-[#1C1919] bg-opacity-80  lg:w-[937px] mx-auto h-full overflow-y-scroll scrollbar">
+    <div class="lg:h-[60px] flex justify-between items-center gap-2 my-2 mb-6 mx-auto rounded-2xl p-4 bg-[#252121] bg-opacity-80 lg:w-[300px] text-center text-[15px] lg:text-xl text-white">
+      <img th:src="@{iconos/puntos.png}" class="w-[15px]">
+      <p>RANKING</p>
+      <img th:src="@{iconos/puntos.png}" class="w-[15px]">
+    </div>
+    <div class=" flex justify-center items-center flex-col gap-6 ">
+      <div class="w-full h-[35px] lg:w-[810px] lg:h-[70px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80 flex items-center">
+        <p class="text-white text-[15px] lg:text-2xl ml-5">#</p>
+        <p class="text-white text-[15px] lg:text-2xl ml-5">Foto</p>
+        <p class="text-white text-[15px] lg:text-2xl m-5">Username</p>
+        <p class="text-white text-[15px] lg:text-2xl ml-auto mr-2 ">Puntaje</p>
+      </div>
+      <div class="flex flex-col gap-y-6 mb-2" th:each="usuario : ${usuarios}">
+        <div class="w-full h-[35px] lg:w-[810px] lg:h-[70px] rounded-xl p-2 outline-0 bg-[#252121] bg-opacity-80 flex items-center">
+          <p class="text-white text-[15px] lg:text-2xl m-6" name="posicion"></p>
+          <img th:src="@{${usuario.fotoPerfil}}" class="max-w-[100%] w-[30px] h-full lg:w-[50px] lg:h-[50px]  rounded-xl">
+          <form action="/user/perfil" method="get">
+            <input type="submit" class="cursor-pointer text-white text-[15px] lg:text-xl m-4" th:value="${usuario.username}" name="username">
+          </form>
+          <p th:text="${usuario.puntaje}" class="text-white text-[15px] lg:text-2xl ml-auto mr-10 "></p>
+        </div>
+      </div>
+
+
+      <script>
+        var array = document.querySelectorAll('[name="posicion"]');
+        var cantidad = array.length;
+
+        for (var i = 1; i <= cantidad; i++) {
+          array[i-1].textContent = i;
+        }
+      </script>
+    </div>
+  </div>
+</main>
+
+</body>
+</html>

@@ -68,4 +68,24 @@ public class ControladorUsuario {
     public ModelAndView validarMail(HttpSession session){
         return new ModelAndView("validarMail");
     }
+
+    @RequestMapping("/historialPartidas")
+    public ModelAndView historialPartidas(HttpSession session){
+        ModelMap model=new ModelMap();
+        try {
+            Usuario usuario=servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario"));
+            model.put("usuario",usuario);
+            model.put("partidas",servicioObtener.obtenerPartidasPorUsuario(usuario.getId()));
+        } catch (UsuarioInexistenteException e) {
+            return new ModelAndView("redirect:/login",model);
+        }
+        return new ModelAndView("historial/partidas",model);
+    }
+
+    @RequestMapping("/ranking")
+    public ModelAndView ranking(HttpSession session){
+        ModelMap model=new ModelMap();
+        model.put("usuarios",servicioObtener.obtenerUsuariosOrdenadosPorPuntaje());
+        return new ModelAndView("ranking",model);
+    }
 }

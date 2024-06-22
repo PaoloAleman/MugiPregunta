@@ -38,4 +38,10 @@ public interface RepositorioObtener {
     PartidaPregunta obtenerUltimaPreguntaDeLaPartida(Integer id);
 
     PyR obtenerRespuestaCorrectaDePregunta(Pregunta pregunta);
+
+    Partida obtenerUltimaPartidaDelUsuario(Integer id);
+
+    List<Partida> obtenerPartidasPorUsuario(Integer idUsuario);
+
+    List<Usuario> obtenerUsuarios();
 }

@@ -1,6 +1,7 @@
 package com.project.infraestructura;
 
 import com.project.dominio.entidades.Partida;
+import com.project.dominio.entidades.Usuario;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,5 +16,10 @@ public class RepositorioActualizarImpl implements RepositorioActualizar {
     @Override
     public void actualizarPartida(Partida partida) {
         sessionFactory.getCurrentSession().saveOrUpdate(partida);
+    }
+
+    @Override
+    public void actualizarUsuario(Usuario usuario) {
+        sessionFactory.getCurrentSession().saveOrUpdate(usuario);
     }
 }

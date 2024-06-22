@@ -40,10 +40,11 @@
                             PARTIDA</h1>
                         <div class="flex items-center gap-x-2">
                             <img class="w-[18px] lg:w-[28px] max-w-[100%]" th:src="@{iconos/crown.png}">
-                            <label class="text-[12px] lg:text-[20px] text-white"></label>
+                            <label th:if="${ultimaPartida!=null}" class="text-[12px] lg:text-[20px] text-white" th:text="${ultimaPartida.puntos}"></label>
+                            <label th:if="${ultimaPartida==null}" class="text-[12px] lg:text-[20px] text-white" th:text="${mensaje}"></label>
                         </div>
                         <div class="flex gap-x-2">
-                            <a href="/partida/jugar"
+                            <a th:href="@{/partida}" th:if="${partidaActiva!=null}"
                                class="text-white text-[10px] lg:text-[15px] lg:tracking-[0.16em] font-semibold">
                                 <div class="flex justify-center items-center bg-[#252121] rounded-2xl w-[97px] h-[19px] lg:w-[200px] lg:h-[35px] hover:bg-gray-200 hover:text-black">
                                     CONTINUAR PARTIDA
@@ -59,11 +60,11 @@
                                          class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="avatarButton">
                                             <li>
-                                                <a  href="/historial/partidasJugadas"
+                                                <a  th:href="@{/historialPartidas}"
                                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Historial de partidas</a>
                                             </li>
                                             <li>
-                                                <a href="/historial/duelosJugados"
+                                                <a th:href="@{/historialDuelos}"
                                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Historial de duelos</a>
                                             </li>
                                         </ul>
@@ -89,16 +90,16 @@
                         <p class="text-white ext-[15px] lg:text-xl ml-1 mr-4 " name="posicion"></p>
                         <img th:src="@{${user.fotoPerfil}}"
                              class="max-w-[100%] w-[30px] lg:w-[45px] h-full rounded-xl">
-                        <form action="/user/perfil" method="get">
-                            <input type="submit" class="text-white text-[15px] lg:text-xl m-4" th:value="${user.username}"
-                                   name="username">
+                        <form th:action="@{/perfil}" method="get">
+                            <button type="submit" class="text-white text-[15px] lg:text-xl m-4" th:value="${user.id}" th:text="${user.username}"
+                                    name="idUsuario"></button>
                         </form>
                         <p class="text-white ext-[15px] lg:text-xl ml-auto mr-2" th:text="${user.puntaje}"></p>
                     </div>
                 </div>
                 <div class="flex justify-center my-2 text-white">
                     <a class="lg:w-[300px] h-[40px] rounded-xl bg-[#1C1919] bg-opacity-80 flex justify-center items-center p-2 text-[15px] lg:text-2xl"
-                       href="/user/ranking">
+                       th:href="@{/ranking}">
                         Ver ranking completo
                     </a>
                 </div>

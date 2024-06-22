@@ -33,4 +33,10 @@ public interface ServicioObtener {
     PartidaPregunta obtenerUltimaPreguntaDeLaPartida(Integer id);
 
     PyR obtenerRespuestaCorrectaDePregunta(Pregunta pregunta);
+
+    Partida obtenerUltimaPartidaDelUsuario(Integer id) throws PartidaInexistenteException;
+
+    List<Partida> obtenerPartidasPorUsuario(Integer idUsuario);
+
+    List<Usuario> obtenerUsuarios();
 }
