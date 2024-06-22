@@ -33,6 +33,7 @@ public class ControladorPartida {
         ModelMap model=new ModelMap();
         try {
             Usuario usuario=servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario"));
+            servicioPartida.desactivarTodasLasPartidasDelUsuario(usuario.getId());
             servicioCrear.crearPartida(new Partida(usuario));
         } catch (UsuarioInexistenteException e) {
             return new ModelAndView("redirect:/login",model);
@@ -60,7 +61,7 @@ public class ControladorPartida {
         try {
             Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario((Integer) session.getAttribute("idUsuario"));
             PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
-            vista=servicioPartida.definirSiLaRespuestaEsCorrecta(idRespuesta,partidaPregunta.getPregunta());
+            vista=servicioPartida.definirSiLaRespuestaEsCorrecta(idRespuesta,partidaPregunta);
         } catch (PartidaInexistenteException e) {
             return new ModelAndView("redirect:/home");
         }

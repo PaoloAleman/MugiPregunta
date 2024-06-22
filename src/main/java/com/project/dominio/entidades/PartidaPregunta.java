@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,6 +19,7 @@ public class PartidaPregunta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Boolean resultado;
+    private LocalDateTime horario;
     @ManyToOne
     private Partida partida;
     @ManyToOne
@@ -25,5 +28,6 @@ public class PartidaPregunta {
     public PartidaPregunta(Partida partida, Pregunta pregunta) {
         this.partida = partida;
         this.pregunta = pregunta;
+        this.horario = LocalDateTime.now();
     }
 }

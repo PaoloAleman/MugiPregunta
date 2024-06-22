@@ -1,9 +1,6 @@
 package com.project.dominio.servicios;
 
-import com.project.dominio.entidades.Partida;
-import com.project.dominio.entidades.Pregunta;
-import com.project.dominio.entidades.PyR;
-import com.project.dominio.entidades.Usuario;
+import com.project.dominio.entidades.*;
 import com.project.infraestructura.RepositorioActualizar;
 import com.project.infraestructura.RepositorioObtener;
 import com.project.infraestructura.RepositorioPartida;
@@ -11,7 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service("servicioPartida")
@@ -28,12 +28,13 @@ public class ServicioPartidaImpl implements ServicioPartida {
     }
 
     @Override
-    public String definirSiLaRespuestaEsCorrecta(Integer idRespuesta, Pregunta pregunta) {
-        List<PyR> pyrs=repositorioObtener.obtenerRespuestasDePregunta(pregunta.getId()).stream().
-                filter(pyr -> pyr.getRespuesta().getId()==idRespuesta && pyr.getEsCorrecta()==true).
-                collect(Collectors.toList());
+    public String definirSiLaRespuestaEsCorrecta(Integer idRespuesta, PartidaPregunta partidaPregunta) {
+        List<PyR> pyrs = repositorioObtener.obtenerRespuestasDePregunta(partidaPregunta.getPregunta().getId()).stream()
+                .filter(pyr -> Objects.equals(pyr.getRespuesta().getId(), idRespuesta) && pyr.getEsCorrecta())
+                .collect(Collectors.toList());
         String vista="redirect:/respuestaCorrecta";
-        if (pyrs.isEmpty()) {
+        if (Duration.between(partidaPregunta.getHorario(), LocalDateTime.now()).getSeconds() > 10
+                || pyrs.isEmpty()) {
             vista="redirect:/respuestaIncorrecta";
         }
         return vista;
@@ -55,5 +56,15 @@ public class ServicioPartidaImpl implements ServicioPartida {
     public void actualizarPuntajeUsuario(Usuario usuario) {
         usuario.setPuntaje(usuario.getPuntaje()+1);
         repositorioActualizar.actualizarUsuario(usuario);
+    }
+
+    @Override
+    public void desactivarTodasLasPartidasDelUsuario(Integer id) {
+        List<Partida> partidas=repositorioObtener.obtenerPartidasPorUsuario(id).
+                                stream().filter(p -> p.getActiva()==true).collect(Collectors.toList());
+        for (Partida partida : partidas) {
+            partida.setActiva(false);
+            repositorioActualizar.actualizarPartida(partida);
+        }
     }
 }

@@ -57,11 +57,18 @@ public class ControladorHome {
             validarQueNoHayCamposVacios(username,password);
             Usuario usuario=servicioObtener.obtenerUsuarioPorUsernamePassword(username,password);
             session.setAttribute("idUsuario",usuario.getId());
+            session.setMaxInactiveInterval(1800);
         } catch (UsuarioInexistenteException | CampoVacioException e) {
             model.put("mensaje",e.getMessage());
             return new ModelAndView("login",model);
         }
         return new ModelAndView("redirect:/home");
+    }
+
+    @RequestMapping("/logout")
+    public ModelAndView logout(HttpSession session){
+        session.invalidate();
+        return new ModelAndView("redirect:/login");
     }
 
     private void validarQueNoHayCamposVacios(String username, String password) throws CampoVacioException {
