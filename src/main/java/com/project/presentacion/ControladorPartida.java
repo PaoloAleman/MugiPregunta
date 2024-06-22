@@ -46,9 +46,15 @@ public class ControladorPartida {
         try {
             Pregunta pregunta=servicioObtener.obtenerPreguntaRandom();
             Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario((Integer) session.getAttribute("idUsuario"));
-            servicioCrear.crearPartidaPregunta(new PartidaPregunta(partida,pregunta));
-            model.put("pregunta",pregunta);
-            model.put("pyrs",servicioObtener.obtenerRespuestasDePregunta(pregunta.getId()));
+            PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
+            if(!servicioPartida.validarSiSeDebeRepetirLaPregunta(partidaPregunta)) {
+                model.put("pregunta", pregunta);
+                model.put("pyrs", servicioObtener.obtenerRespuestasDePregunta(pregunta.getId()));
+                servicioCrear.crearPartidaPregunta(new PartidaPregunta(partida, pregunta));
+            }else {
+                model.put("pregunta",partidaPregunta.getPregunta());
+                model.put("pyrs",servicioObtener.obtenerRespuestasDePregunta(partidaPregunta.getPregunta().getId()));
+            }
         } catch (PartidaInexistenteException e) {
             return new ModelAndView("redirect:/home");
         }
@@ -62,6 +68,7 @@ public class ControladorPartida {
             Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario((Integer) session.getAttribute("idUsuario"));
             PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
             vista=servicioPartida.definirSiLaRespuestaEsCorrecta(idRespuesta,partidaPregunta);
+            servicioPartida.desactivarPreguntaDeLaPartida(partidaPregunta,vista);
         } catch (PartidaInexistenteException e) {
             return new ModelAndView("redirect:/home");
         }
@@ -73,14 +80,15 @@ public class ControladorPartida {
         try {
             Usuario usuario= servicioObtener.obtenerUsuarioPorID((Integer) session.getAttribute("idUsuario"));
             Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario(usuario.getId());
+            PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
+            servicioPartida.validarQueSeRespondioLaPregunta(partidaPregunta);
             servicioPartida.actualizarPuntajePartida(partida);
             servicioPartida.actualizarPuntajeUsuario(usuario);
-            PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
             model.put("partida",partida);
             model.put("pregunta",partidaPregunta.getPregunta());
         } catch (UsuarioInexistenteException e) {
             return new ModelAndView("redirect:/login");
-        } catch (PartidaInexistenteException e) {
+        } catch (PartidaInexistenteException | PreguntaSinResponderException e) {
             return new ModelAndView("redirect:/home");
         }
         return new ModelAndView("respuestaCorrecta",model);
@@ -90,12 +98,13 @@ public class ControladorPartida {
         ModelMap model=new ModelMap();
         try {
             Partida partida=servicioObtener.obtenerPartidaActivaDelUsuario((Integer) session.getAttribute("idUsuario"));
-            servicioPartida.finalizarPartida(partida);
             PartidaPregunta partidaPregunta=servicioObtener.obtenerUltimaPreguntaDeLaPartida(partida.getId());
+            servicioPartida.validarQueSeRespondioLaPregunta(partidaPregunta);
+            servicioPartida.finalizarPartida(partida);
             model.put("partida",partida);
             model.put("pregunta",partidaPregunta.getPregunta());
             model.put("respuestaCorrecta",servicioObtener.obtenerRespuestaCorrectaDePregunta(partidaPregunta.getPregunta()));
-        } catch (PartidaInexistenteException e) {
+        } catch (PartidaInexistenteException | PreguntaSinResponderException e) {
             return new ModelAndView("redirect:/home");
         }
         return new ModelAndView("respuestaIncorrecta",model);

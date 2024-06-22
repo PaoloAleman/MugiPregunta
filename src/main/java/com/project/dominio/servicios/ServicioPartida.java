@@ -14,4 +14,10 @@ public interface ServicioPartida {
     void actualizarPuntajeUsuario(Usuario usuario);
 
     void desactivarTodasLasPartidasDelUsuario(Integer id);
+
+    void desactivarPreguntaDeLaPartida(PartidaPregunta partidaPregunta, String vista);
+
+    Boolean validarSiSeDebeRepetirLaPregunta(PartidaPregunta partidaPregunta);
+
+    void validarQueSeRespondioLaPregunta(PartidaPregunta partidaPregunta) throws PreguntaSinResponderException;
 }

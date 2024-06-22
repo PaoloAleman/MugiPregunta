@@ -32,10 +32,9 @@ public class ServicioPartidaImpl implements ServicioPartida {
         List<PyR> pyrs = repositorioObtener.obtenerRespuestasDePregunta(partidaPregunta.getPregunta().getId()).stream()
                 .filter(pyr -> Objects.equals(pyr.getRespuesta().getId(), idRespuesta) && pyr.getEsCorrecta())
                 .collect(Collectors.toList());
-        String vista="redirect:/respuestaCorrecta";
-        if (Duration.between(partidaPregunta.getHorario(), LocalDateTime.now()).getSeconds() > 10
-                || pyrs.isEmpty()) {
-            vista="redirect:/respuestaIncorrecta";
+        String vista="redirect:/respuestaIncorrecta";
+        if (!pyrs.isEmpty() && Duration.between(partidaPregunta.getHorario(),LocalDateTime.now()).getSeconds() <= 10) {
+            vista="redirect:/respuestaCorrecta";
         }
         return vista;
     }
@@ -65,6 +64,26 @@ public class ServicioPartidaImpl implements ServicioPartida {
         for (Partida partida : partidas) {
             partida.setActiva(false);
             repositorioActualizar.actualizarPartida(partida);
+        }
+    }
+
+    @Override
+    public void desactivarPreguntaDeLaPartida(PartidaPregunta partidaPregunta, String vista) {
+        partidaPregunta.setActiva(false);
+        partidaPregunta.setResultado((vista.equals("redirect:/respuestaCorrecta")) ? true : false);
+        repositorioActualizar.actualizarPartidaPregunta(partidaPregunta);
+    }
+
+    @Override
+    public Boolean validarSiSeDebeRepetirLaPregunta(PartidaPregunta partidaPregunta) {
+        return (partidaPregunta != null && partidaPregunta.getActiva()) ? partidaPregunta.getActiva() : false;
+    }
+
+    @Override
+    public void validarQueSeRespondioLaPregunta(PartidaPregunta partidaPregunta) throws PreguntaSinResponderException {
+        if(partidaPregunta.getResultado()==null){
+            finalizarPartida(partidaPregunta.getPartida());
+            throw new PreguntaSinResponderException("La pregunta no fue respondida");
         }
     }
 }

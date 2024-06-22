@@ -20,6 +20,7 @@ public class PartidaPregunta {
     private Integer id;
     private Boolean resultado;
     private LocalDateTime horario;
+    private Boolean activa;
     @ManyToOne
     private Partida partida;
     @ManyToOne
@@ -29,5 +30,7 @@ public class PartidaPregunta {
         this.partida = partida;
         this.pregunta = pregunta;
         this.horario = LocalDateTime.now();
+        this.resultado=null;
+        this.activa=true;
     }
 }
